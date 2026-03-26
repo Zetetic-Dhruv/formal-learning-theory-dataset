@@ -1,0 +1,285 @@
+{
+  "project": "LimitsOfLearning — Lean4 Metaprogram for Formal Learning Theory",
+  "initialized": "2026-03-16",
+  "paradigm_joints": [
+    {
+      "partition": "PAC/Online",
+      "shared": ["concept_class", "hypothesis_space", "vc_dimension", "learner"],
+      "P1_private": ["iid_sample", "pac_learning", "generalization_error", "sample_complexity", "rademacher_complexity"],
+      "P2_private": ["mistake_bounded", "regret_bounded", "online_learning", "littlestone_dimension", "mistake_bound", "regret"],
+      "HC": 1.0,
+      "cross_edges": ["pac_learning does_not_imply mistake_bounded", "online_learning strictly_stronger pac_learning"],
+      "counterdefs_triggered": ["separate learner types (BP1)", "separate success criteria", "separate complexity measures"]
+    },
+    {
+      "partition": "PAC/Gold",
+      "shared": ["concept_class", "hypothesis_space", "learner"],
+      "P1_private": ["iid_sample", "pac_learning", "generalization_error", "vc_dimension", "sample_complexity"],
+      "P2_private": ["data_stream", "text_presentation", "informant_presentation", "ex_learning", "bc_learning", "mind_change_count", "mind_change_ordinal"],
+      "HC": 1.0,
+      "cross_edges": ["ex_learning does_not_imply pac_learning"],
+      "counterdefs_triggered": ["separate data interfaces (BP3)", "separate convergence notions"]
+    },
+    {
+      "partition": "Online/Gold",
+      "shared": ["concept_class", "hypothesis_space", "learner"],
+      "P1_private": ["mistake_bounded", "online_learning", "littlestone_dimension"],
+      "P2_private": ["data_stream", "ex_learning", "mind_change_count"],
+      "HC": 0.0,
+      "cross_edges": [],
+      "counterdefs_triggered": []
+    },
+    {
+      "partition": "FiniteDim/OrdinalDim",
+      "shared": ["concept_class"],
+      "P1_private": ["vc_dimension", "littlestone_dimension", "sample_complexity", "mistake_bound"],
+      "P2_private": ["ordinal_vc_dim", "ordinal_littlestone_dim", "mind_change_ordinal", "universal_learning"],
+      "HC": 1.0,
+      "cross_edges": ["ordinal_vc_dim extends_grammar vc_dimension", "ordinal_littlestone_dim extends_grammar littlestone_dimension", "mind_change_ordinal extends_grammar mind_change_count", "pseudodimension extends_grammar vc_dimension", "natarajan_dimension extends_grammar vc_dimension", "universal_learning strictly_stronger pac_learning"],
+      "counterdefs_triggered": ["WithTop N vs Ordinal (BP2)", "separate finite/ordinal hierarchies"]
+    },
+    {
+      "partition": "Frequentist/Bayesian",
+      "shared": ["concept_class", "hypothesis_space", "learner", "iid_sample"],
+      "P1_private": ["pac_learning", "vc_dimension", "generalization_error", "rademacher_complexity"],
+      "P2_private": ["bayesian_learner", "bayesian_inference", "posterior_consistency", "pac_bayes_bound", "kl_complexity", "gibbs_posterior"],
+      "HC": 0.7,
+      "cross_edges": ["pac_learning analogy posterior_consistency", "pac_bayes_bound extends_grammar pac_learning", "algorithmic_stability analogy pac_bayes_bound", "pac_bayes_bound upper_bounds generalization_error", "posterior_consistency requires_assumption bayesian_inference"],
+      "counterdefs_triggered": ["prior-dependent vs prior-free (BP7)", "KL vs VC capacity"]
+    }
+  ],
+  "concepts_typed_summary": {
+    "L0_computation": {
+      "count": 19,
+      "profiles": {"T-Abbrev": 7, "T-Structure": 7, "T-Bridge": 4, "T-Prop": 1},
+      "file": "LimitsOfLearning/Computation.lean"
+    },
+    "L1_base_types": {
+      "count": 11,
+      "profiles": {"T-Abbrev": 7, "T-Structure": 2, "T-Prop": 2},
+      "file": "LimitsOfLearning/Basic.lean"
+    },
+    "L2_data": {
+      "count": 10,
+      "profiles": {"T-Abbrev": 3, "T-Structure": 6, "T-Prop": 1},
+      "file": "LimitsOfLearning/Data.lean"
+    },
+    "L3_learners": {
+      "count": 21,
+      "profiles": {"T-Structure": 12, "T-Prop": 7, "T-Abbrev": 2},
+      "file": "LimitsOfLearning/Learner.lean"
+    },
+    "L4_criteria": {
+      "count": 20,
+      "profiles": {"T-Prop": 20},
+      "file": "LimitsOfLearning/Criterion.lean"
+    },
+    "L5_complexity": {
+      "count": 33,
+      "profiles": {"T-Abbrev": 16, "T-Parametric": 3, "T-Structure": 5, "T-Prop": 9},
+      "file": "LimitsOfLearning/Complexity.lean"
+    },
+    "L6_theorems": {
+      "count": 16,
+      "profiles": {"T-Prop": 16},
+      "file": "LimitsOfLearning/Theorem.lean"
+    },
+    "L7_processes": {
+      "count": 12,
+      "profiles": {"T-Structure": 7, "T-Abbrev": 2, "T-Prop": 1, "T-Break": 2},
+      "file": "LimitsOfLearning/Process.lean"
+    }
+  },
+  "break_points": [
+    {
+      "id": "BP1",
+      "name": "No common learner parent",
+      "location": "LimitsOfLearning/Learner.lean",
+      "HC_source": "PAC/Online=1.0, PAC/Gold=1.0",
+      "severity": "critical"
+    },
+    {
+      "id": "BP2",
+      "name": "VCdim = WithTop N vs OrdinalVCdim = Ordinal",
+      "location": "LimitsOfLearning/Complexity.lean, Bridge.lean",
+      "HC_source": "FiniteDim/OrdinalDim=1.0",
+      "severity": "high"
+    },
+    {
+      "id": "BP3",
+      "name": "PAC measures vs Online adversaries (data interface)",
+      "location": "LimitsOfLearning/Data.lean",
+      "HC_source": "PAC/Online=1.0, PAC/Gold=1.0",
+      "severity": "critical"
+    },
+    {
+      "id": "BP4",
+      "name": "Function-class to set-family bridge lossy",
+      "location": "LimitsOfLearning/Bridge.lean",
+      "HC_source": "internal to PAC, surfaces at Mathlib bridges",
+      "severity": "medium"
+    },
+    {
+      "id": "BP5",
+      "name": "Five generalization bounds with different signatures",
+      "location": "LimitsOfLearning/Theorem.lean",
+      "HC_source": "internal to PAC, FiniteDim/OrdinalDim=1.0",
+      "severity": "high"
+    },
+    {
+      "id": "BP6",
+      "name": "ConceptClass over-connected (22 edges, 4 counterdefs)",
+      "location": "LimitsOfLearning/Basic.lean",
+      "HC_source": "all 5 paradigm joints",
+      "severity": "high",
+      "discovered_during_typing": true
+    },
+    {
+      "id": "BP7",
+      "name": "Bayesian prior has no canonical type",
+      "location": "LimitsOfLearning/Learner.lean, Computation.lean",
+      "HC_source": "Freq/Bayes=0.7",
+      "severity": "medium",
+      "discovered_during_typing": true
+    }
+  ],
+  "counterdefinitions": [
+    {"concept": "ConceptClass", "count": 4, "paradigms_served": ["Online", "Gold", "Bayesian", "Multiclass"]},
+    {"concept": "IIDSample", "count": 2, "paradigms_served": ["PAC-agnostic", "Bayesian"]},
+    {"concept": "InductiveBias", "count": 1, "paradigms_served": ["Bayesian"]},
+    {"concept": "BayesianLearner", "count": 1, "paradigms_served": ["Measure-theoretic Bayes"]}
+  ],
+  "eta_checks": {
+    "profile_distribution": {
+      "T-Abbrev": "32.9% (< 60% threshold: PASS)",
+      "T-Prop": "31.4%",
+      "T-Structure": "27.9%",
+      "T-Bridge": "3.6%",
+      "T-Parametric": "2.1%",
+      "T-Break": "2.1% (> 0%: PASS)",
+      "T-Class": "0.0% (< 40% threshold: PASS)"
+    },
+    "break_point_count": "7 (predicted 5, discovered 2: PASS, within 5-10 range)",
+    "mathlib_bridges": "5 (B1-B5 in Bridge.lean, within 3-8 range: PASS)",
+    "coverage": "139/139 kernel nodes = 100%",
+    "homogeneity_warnings": "none"
+  },
+  "compilation_discovered_constraints": [
+    {
+      "id": "C1",
+      "description": "Σ is a Lean4 keyword (sigma type) — cannot use as variable name",
+      "impact": "Renamed to Sym across Computation.lean and Process.lean (all automata/language types)",
+      "files_affected": ["Computation.lean", "Process.lean"],
+      "typing_consequence": "None — pure naming constraint. No semantic loss."
+    },
+    {
+      "id": "C2",
+      "description": "ℝ≥0 (NNReal) notation requires explicit Mathlib import not transitively available",
+      "impact": "Fell back to ℝ in BayesianInference.prior/likelihood/posterior",
+      "files_affected": ["Computation.lean", "Criterion.lean"],
+      "typing_consequence": "Non-negativity constraint lost at type level. COUNTERDEFINITION OPPORTUNITY: BayesianInference with NNReal fields when Mathlib.Data.NNReal.Defs is imported.",
+      "HC_relevance": "Freq/Bayes joint HC=0.7 — NNReal version is Bayesian-native, ℝ version is paradigm-neutral"
+    },
+    {
+      "id": "C3",
+      "description": "def blocks typeclass synthesis — Lean4 won't unfold def for instance resolution",
+      "impact": "Changed ConceptClass, HypothesisSpace, DriftRate from def to abbrev",
+      "files_affected": ["Basic.lean", "Complexity.lean"],
+      "typing_consequence": "abbrev makes types transparent to Lean elaborator. Required for Set membership, LE/Zero instances. This is a Lean4-specific constraint with no mathematical content — pure substrate constraint."
+    },
+    {
+      "id": "C4",
+      "description": "TextPresentation(DataStream X Unit) incompatible with GoldLearner(List (X × Bool))",
+      "impact": "Changed TextPresentation to extend DataStream X Bool with positive/correct/exhaustive fields",
+      "files_affected": ["Data.lean"],
+      "typing_consequence": "Semantically equivalent — text is stream of (x, true) pairs. The Unit version was more elegant (label carries no info in text) but Lean4's type system requires matching. BP₃ data interface break partially manifests here: the data FORMAT is paradigm-specific."
+    },
+    {
+      "id": "C5",
+      "description": "Ordinal requires universe annotation in structure fields",
+      "impact": "Used Ordinal.{0} in VCLTree.value field",
+      "files_affected": ["Complexity.lean"],
+      "typing_consequence": "Fixes to countable ordinals (Ordinal.{0}). Learning theory ordinals ARE countable (< ω₁), so no semantic loss. But Path B might need higher ordinals for transfinite induction arguments."
+    }
+  ],
+  "gamma_ledger": {
+    "invariance": "types compile across paradigm modules — VERIFIED: lake build 0 errors, 69 sorry warnings, CI-enforced",
+    "completeness": "139/139 concept graph nodes have types + ERM added (140 total)",
+    "compilation_status": "PASS — zero errors, only sorry warnings",
+    "lean_toolchain": "leanprover/lean4:v4.29.0-rc6",
+    "mathlib_version": "master (8147 cached oleans)"
+  },
+  "gap_closure_session": {
+    "date": "2026-03-16",
+    "gaps_closed": [
+      {
+        "id": "G1",
+        "description": "PACLearnable sorry-in-Prop — conclusion was trivially True",
+        "fix": "Replaced sorry with well-typed measure-theoretic statement: ∃ Dm probability measure on (Fin m → X × Bool), Dm{S | D{x | L(S)(x) ≠ c(x)} ≤ ε} ≥ 1-δ",
+        "also_fixed": ["AgnosticPACLearnable", "MistakeBounded (via OnlineLearner.mistakes helper)", "RegretBounded (via OnlineLearner.cumulativeLoss/fixedHypothesisLoss helpers)", "UniversalLearnable", "ExactLearnable"],
+        "sorry_reduction": "6 sorry-in-Prop eliminated, 4 net sorry reduction"
+      },
+      {
+        "id": "G2",
+        "description": "Trivially-true theorem conclusions (nfl, natarajan, computational_hardness, occam, advice, meta_pac, unlabeled, vcdim_hardness)",
+        "fix": "Replaced True conclusions with semantically correct statements: nfl uses ¬PACLearnable Set.univ, natarajan uses ¬(DSDim < ⊤), vcdim_hardness uses SQDimension = ⊤, occam uses consistency→PACLearnable, etc."
+      },
+      {
+        "id": "G3",
+        "description": "fundamental_theorem duplicated vc_characterization",
+        "fix": "Replaced with 5-way conjunction (PAC↔VCDim, VCDim↔Compression, VCDim↔Rademacher→0, PAC→ERM, VCDim↔GrowthFunction) documenting BP₅"
+      },
+      {
+        "id": "G4",
+        "description": "VCDim required [Fintype X] — too restrictive",
+        "fix": "Removed [Fintype X] from VCDim, GrowthFunction, and all 15+ downstream theorems/bridges. Finset X provides finite subset supremum without Fintype.",
+        "propagation": ["Complexity.lean (5 defs/theorems)", "Theorem.lean (8 theorems)", "Bridge.lean (3 theorems)"]
+      },
+      {
+        "id": "G5",
+        "description": "EXLearnable List.ofFn fragility (reconstructs list at each step)",
+        "fix": "Introduced dataUpTo helper using List.range.map. Applied uniformly across all Gold-style criteria (EX, BC, Finite, Vacillatory, Anomalous, Monotonic, TrialAndError)."
+      },
+      {
+        "id": "G6",
+        "description": "BayesianInference misplaced in Computation.lean",
+        "fix": "Moved to Learner.lean (before BayesianLearner). Conceptually correct: Bayesian inference is a learning-theory primitive, not a computability concept."
+      },
+      {
+        "id": "G7",
+        "description": "Missing ERM (Empirical Risk Minimization) definition",
+        "fix": "Added noncomputable def ERM as BatchLearner in Complexity.lean after EmpiricalError. ERM is the canonical PAC learner — the constructive direction of the fundamental theorem."
+      }
+    ]
+  },
+  "meta_ledger": {
+    "Coh_ens_Will": "type architecture serves Path A Step (b) goal — COMPILED AND SEMANTICALLY STRENGTHENED",
+    "Pl_imagine": "7 break points + 5 compilation constraints + 7 gaps closed for Path B",
+    "counterdefs_total": 8,
+    "HC_joints_computed": 5,
+    "total_lean_lines": 2912,
+    "compilation_constraints_discovered": 5,
+    "gaps_closed": 7,
+    "sorry_count": 69,
+    "sorry_in_prop_remaining": 0,
+    "trivially_true_conclusions_remaining": 0,
+    "structure_field_sorries": 4,
+    "definitions_added": ["ERM", "OnlineLearner.mistakes", "OnlineLearner.cumulativeLoss", "fixedHypothesisLoss", "dataUpTo"]
+  },
+  "files": [
+    {"name": "lakefile.lean", "role": "build configuration"},
+    {"name": "lean-toolchain", "role": "toolchain version (v4.29.0-rc6)"},
+    {"name": "LimitsOfLearning/Basic.lean", "role": "L1: base types (Domain, ConceptClass, etc.)"},
+    {"name": "LimitsOfLearning/Computation.lean", "role": "L0: automata, computability, Bayesian, info-theoretic"},
+    {"name": "LimitsOfLearning/Data.lean", "role": "L2: data presentations (IID, Stream, Oracle)"},
+    {"name": "LimitsOfLearning/Learner.lean", "role": "L3: learner types (Batch, Online, Gold, Bayesian, Meta)"},
+    {"name": "LimitsOfLearning/Criterion.lean", "role": "L4: success criteria (PAC, EX, Online, Universal, Bayes)"},
+    {"name": "LimitsOfLearning/Complexity.lean", "role": "L5: complexity measures (VCdim, Ldim, Rademacher, etc.)"},
+    {"name": "LimitsOfLearning/Theorem.lean", "role": "L6: theorems (Fundamental, Gold, NFL, Separations)"},
+    {"name": "LimitsOfLearning/Process.lean", "role": "L7: processes (L*, CEGIS, drift, ILP, scope boundaries)"},
+    {"name": "LimitsOfLearning/Bridge.lean", "role": "Bridges: Mathlib K1-K3, cross-paradigm, BP4"},
+    {"name": "BREAKS.md", "role": "Break point documentation for Path B"},
+    {"name": "TYPE_DERIVATION_STATE.json", "role": "This file — URS state tracking"}
+  ],
+  "session_eta": "COMPILED + SEMANTICALLY STRENGTHENED + CI-ENFORCED: 0 errors, 69 sorry warnings, 0 sorry-in-Prop, 0 trivially-true conclusions. GitHub Actions lean4-build job enforces 0-error invariant and reports sorry count."
+}

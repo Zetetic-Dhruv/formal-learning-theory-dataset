@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "description": "Reference tasks for flt_concept_graph.json. Each task is a structured query answerable by graph traversal.",
+    "version": "1.0",
+    "companion_to": "flt_concept_graph.json v3.4",
+    "task_count": 15
+  },
+  "tasks": [
+    {
+      "id": "T01",
+      "type": "prerequisite_retrieval",
+      "question": "What concepts must be defined before VCdimension can be stated?",
+      "method": "Traverse all defined_using edges FROM vc_dimension recursively.",
+      "expected_path": ["vc_dimension", "shatters", "concept_class", "hypothesis_space", "domain", "label"],
+      "edge_types_used": ["defined_using"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T02",
+      "type": "characterization_query",
+      "question": "What are ALL known characterizations of PAC learnability?",
+      "method": "Collect all nodes X where X → pac_learning with relation characterizes, plus the fundamental_theorem node.",
+      "expected_nodes": ["vc_dimension", "ds_dimension", "fundamental_theorem"],
+      "edge_types_used": ["characterizes"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T03",
+      "type": "non_implication_query",
+      "question": "Is a PAC-learnable class necessarily online-learnable with finite mistakes?",
+      "method": "Check for does_not_imply edge from pac_learning to mistake_bounded.",
+      "expected_answer": "NO. Witness: thresholds on R (VCdim=1, Ldim=infinity).",
+      "edge_types_used": ["does_not_imply"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T04",
+      "type": "generalization_bound_comparison",
+      "question": "What generalization bounds are available and what do they each depend on?",
+      "method": "Find all nodes X with upper_bounds → generalization_error. For each, traverse defined_using to find dependencies.",
+      "expected_nodes": ["rademacher_complexity", "pac_bayes_bound", "algorithmic_stability", "information_theoretic_bound", "margin_theory"],
+      "edge_types_used": ["upper_bounds", "defined_using"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "T05",
+      "type": "cross_paradigm_reasoning",
+      "question": "Can a Bayesian learner be PAC-Bayes analyzed for a multiclass problem where the Natarajan dimension is finite but the class is not learnable?",
+      "method": "Traverse: bayesian_learner →[instance_of]→ learner; pac_bayes_bound →[upper_bounds]→ generalization_error; natarajan_dimension →[does_not_imply]→ pac_learning; ds_dimension →[characterizes]→ pac_learning.",
+      "expected_answer": "PAC-Bayes bounds apply to any posterior Q regardless of class structure, but if the class has infinite DS dimension it is not PAC learnable, so the bounds may be vacuous. Finite Natarajan dimension is necessary but NOT sufficient for multiclass learnability.",
+      "edge_types_used": ["instance_of", "upper_bounds", "does_not_imply", "characterizes"],
+      "difficulty": "hard"
+    },
+    {
+      "id": "T06",
+      "type": "hierarchy_extraction",
+      "question": "What is the strict power hierarchy among success criteria in Gold's model?",
+      "method": "Traverse strictly_stronger edges among Ex, BC, FIN nodes.",
+      "expected_chain": "BC ⊋ Ex ⊋ FIN",
+      "edge_types_used": ["strictly_stronger"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T07",
+      "type": "obstruction_analysis",
+      "question": "Why is the analogy between concept_drift and online_learning not a formal theorem?",
+      "method": "Read the obstruction field on the analogy edge concept_drift → online_learning.",
+      "expected_answer": "Data model mismatch: drift uses i.i.d. draws per step from a slowly changing distribution; online uses adversarially chosen instances from a fixed class.",
+      "edge_types_used": ["analogy"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "T08",
+      "type": "grammar_expansion_detection",
+      "question": "Which generalizations of VCdimension required inventing new formal primitives?",
+      "method": "Find all nodes X with extends_grammar → vc_dimension.",
+      "expected_nodes": ["pseudodimension", "natarajan_dimension", "ordinal_vc_dim"],
+      "edge_types_used": ["extends_grammar"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T09",
+      "type": "computational_barrier_query",
+      "question": "What prevents efficient PAC learning even when the VC dimension is finite?",
+      "method": "Find computational_hardness node, traverse requires_assumption and used_in_proof edges.",
+      "expected_answer": "Under cryptographic assumptions (DCRA, factoring, LWE), polynomial-size circuits have finite VCdim but are not efficiently PAC learnable. This cannot be proved from P≠NP alone (Applebaum-Barak-Xiao 2008).",
+      "edge_types_used": ["requires_assumption", "used_in_proof", "does_not_imply"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "T10",
+      "type": "curriculum_ordering",
+      "question": "Generate a reading order for learning PAC theory from scratch.",
+      "method": "Topological sort of defined_using subgraph restricted to PAC-related nodes.",
+      "expected_order": ["domain", "label", "concept", "concept_class", "hypothesis_space", "shatters", "vc_dimension", "iid_sample", "generalization_error", "sample_complexity", "pac_learning", "vc_characterization", "fundamental_theorem"],
+      "edge_types_used": ["defined_using"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "T11",
+      "type": "scope_boundary_query",
+      "question": "Is reinforcement learning covered in this graph?",
+      "method": "Check for scope_boundary node with id containing 'rl'.",
+      "expected_answer": "Explicitly excluded. scope_boundary_rl states: 'RL extends bandits to sequential decision-making. Different problem structure (MDP, policy, value function).'",
+      "edge_types_used": [],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T12",
+      "type": "separation_witness_retrieval",
+      "question": "List all known separations between learning paradigms with their witnesses.",
+      "method": "Collect all does_not_imply and strictly_stronger edges with their witness fields.",
+      "expected_count": "9 does_not_imply + 4 strictly_stronger = 13 separation results",
+      "edge_types_used": ["does_not_imply", "strictly_stronger"],
+      "difficulty": "easy"
+    },
+    {
+      "id": "T13",
+      "type": "complexity_measure_comparison",
+      "question": "How do VCdim, Littlestone dim, SQ dim, and star number relate to each other?",
+      "method": "Find all edges among these four nodes. Include characterizes, does_not_imply, upper_bounds, analogy.",
+      "expected_relations": {
+        "vc_dimension ≤ littlestone_dimension": "upper_bounds (one-sided, gap can be infinite)",
+        "sq_dimension vs vc_dimension": "analogy (exponential gap possible: parities)",
+        "star_number = VC(V(C))": "analogy with obstruction (equivalence with derived set system)"
+      },
+      "edge_types_used": ["upper_bounds", "analogy", "does_not_imply"],
+      "difficulty": "hard"
+    },
+    {
+      "id": "T14",
+      "type": "real_valued_extension",
+      "question": "What changes when moving from binary classification to real-valued prediction?",
+      "method": "Traverse extends_grammar and restricts edges from vc_dimension to pseudodimension and fat_shattering_dimension.",
+      "expected_answer": "pseudodimension extends VCdim grammar (witness thresholds for real-valued functions). fat_shattering adds scale-sensitivity (margin parameter γ). Pseudodimension removes the margin from fat-shattering (restricts). Fat-shattering characterizes real-valued PAC learnability.",
+      "edge_types_used": ["extends_grammar", "restricts", "characterizes"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "T15",
+      "type": "multiclass_analysis",
+      "question": "Does the fundamental theorem of statistical learning extend to multiclass?",
+      "method": "Check if fundamental_theorem has edges to multiclass nodes. Check natarajan_dimension and ds_dimension characterization status.",
+      "expected_answer": "The fundamental theorem (VCdim ↔ PAC) is for binary classification. For multiclass: Natarajan dim gives bounds with log(k) gap but does NOT characterize learnability when |Y|=∞ (Brukhim et al. 2022 construct non-learnable class with d_N=1). DS dimension is the correct multiclass characterization.",
+      "edge_types_used": ["characterizes", "does_not_imply", "extends_grammar"],
+      "difficulty": "hard"
+    }
+  ]
+}

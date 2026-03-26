@@ -1,0 +1,218 @@
+{
+  "project": "Formal Learning Theory Textbook",
+  "initialized": "2026-03-16",
+  "concepts_processed": [
+    {
+      "id": "domain",
+      "profile": "A",
+      "centerpiece": "none - pure vocabulary",
+      "length_lines": 3,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "universal dependency sink, no outgoing edges",
+        "Inv": "maximally invariant - substrate",
+        "Comp": "complete"
+      },
+      "notes": "0 outgoing edges, 7 incoming defined_using. Pure atomic type. 3 lines max."
+    },
+    {
+      "id": "label",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 3,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "dependency sink",
+        "Inv": "maximally invariant",
+        "Comp": "complete"
+      },
+      "notes": "0 outgoing, 3 incoming. Even simpler than domain. Combine with domain."
+    },
+    {
+      "id": "alphabet",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 3,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "feeds automata only",
+        "Inv": "maximally invariant",
+        "Comp": "complete"
+      },
+      "notes": "Only relevant to Ch3 automata. Define here, point there."
+    },
+    {
+      "id": "proper_flag",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 3,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "feeds proper_improper_separation",
+        "Inv": "high",
+        "Comp": "complete"
+      },
+      "notes": "Boolean flag. One line definition."
+    },
+    {
+      "id": "target_concept",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 2,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "feeds oracles",
+        "Inv": "high",
+        "Comp": "complete"
+      },
+      "notes": "Just c* in C. Two lines."
+    },
+    {
+      "id": "hypothesis",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 3,
+      "measurements": {
+        "Pl": "trivially high",
+        "Coh": "feeds hypothesis_space",
+        "Inv": "high",
+        "Comp": "complete"
+      },
+      "notes": "Single hypothesis h. Merge with hypothesis_space discussion."
+    },
+    {
+      "id": "algorithmic_probability",
+      "profile": "A",
+      "centerpiece": "none",
+      "length_lines": 5,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "feeds kolmogorov_complexity only",
+        "Inv": "high",
+        "Comp": "complete"
+      },
+      "notes": "Solomonoff prior. Brief because Ch11 will cover Kolmogorov properly."
+    },
+    {
+      "id": "concept",
+      "profile": "A-to-B-bridge",
+      "centerpiece": "the c: X -> {0,1} vs c subset X duality",
+      "length_lines": 10,
+      "measurements": {
+        "Pl": "high but has duality",
+        "Coh": "connects domain+label to everything above",
+        "Inv": "high",
+        "Comp": "complete"
+      },
+      "notes": "The function-vs-set duality is worth stating once clearly. Gateway to concept_class."
+    },
+    {
+      "id": "concept_class",
+      "profile": "G",
+      "centerpiece": "the node everything measures",
+      "length_lines": 30,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "MASSIVE - 21 incoming edges, all complexity measures target it",
+        "Inv": "high",
+        "Comp": "has key_theorems"
+      },
+      "notes": "This is the HUB NODE. 21 incoming edges including ALL complexity measures. Framework Bridge profile - show how this one object is seen differently by every paradigm. This is where the reader first sees why the graph matters."
+    },
+    {
+      "id": "hypothesis_space",
+      "profile": "B-light",
+      "centerpiece": "proper vs improper and why it matters",
+      "length_lines": 20,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "7 incoming edges",
+        "Inv": "high",
+        "Comp": "has key_theorems"
+      },
+      "notes": "The proper/improper distinction has computational consequences (proper_improper_separation). Set up the tension here."
+    },
+    {
+      "id": "inductive_bias",
+      "profile": "D",
+      "centerpiece": "NFL theorem makes this NECESSARY not optional",
+      "length_lines": 30,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "touches NFL, SRM, Bayesian, computational_hardness - FOUR paradigms",
+        "Inv": "low - changes meaning across frameworks",
+        "Comp": "has key_theorems"
+      },
+      "notes": "NEGATIVE RESULT drives this concept. Without NFL, inductive bias is just a design choice. With NFL, its a mathematical necessity. The negativity is the content. Profile D - witness centered around NFL."
+    },
+    {
+      "id": "version_space",
+      "profile": "F",
+      "centerpiece": "version space COLLAPSES for many natural problems",
+      "length_lines": 15,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "measured by star_number and eluder_dimension",
+        "Inv": "moderate - breaks when H != C",
+        "Comp": "has key_theorems"
+      },
+      "notes": "Interesting because version space elimination is the simplest consistent learner but has exponential worst case. The gap between the simple idea and the computational reality is the content."
+    },
+    {
+      "id": "bayesian_inference",
+      "profile": "E",
+      "centerpiece": "analogy to inductive_bias - the obstruction is type_mismatch",
+      "length_lines": 20,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "analogy edges to mml and inductive_bias, required by posterior_consistency",
+        "Inv": "moderate - requires prior specification",
+        "Comp": "complete as definition, incomplete as learning framework"
+      },
+      "notes": "Has ANALOGY edge to inductive_bias with type_mismatch obstruction. The prior IS an inductive bias, but they live in different type systems. This type mismatch is more interesting than the definition of Bayes rule."
+    },
+    {
+      "id": "mdl",
+      "profile": "E",
+      "centerpiece": "three-way analogy network: MDL-MML-Occam, all similar but not equivalent",
+      "length_lines": 20,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "analogy to kolmogorov, mml, and occam_algorithm",
+        "Inv": "moderate",
+        "Comp": "has key_theorems"
+      },
+      "notes": "MDL sits in a triangular analogy network with MML and Occam. None of them are the same thing. The fact that they LOOK the same but ARENT is the content. Obstruction analysis."
+    },
+    {
+      "id": "mml",
+      "profile": "E",
+      "centerpiece": "the MDL-MML-Bayesian triangle of near-misses",
+      "length_lines": 10,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "analogy to mdl and bayesian_inference",
+        "Inv": "moderate",
+        "Comp": "complete"
+      },
+      "notes": "Cover TOGETHER with MDL. The joint treatment reveals the analogy network."
+    },
+    {
+      "id": "srm",
+      "profile": "A-plus",
+      "centerpiece": "explicit construction of inductive bias using VC theory",
+      "length_lines": 10,
+      "measurements": {
+        "Pl": "high",
+        "Coh": "defined_using vc_dimension, analogy to inductive_bias",
+        "Inv": "high within VC framework",
+        "Comp": "complete"
+      },
+      "notes": "SRM is the operational answer to how to build inductive bias. Brief but concrete."
+    }
+  ],
+  "homogeneity_warnings": [],
+  "session_gamma": "Discovery: Ch1 has 7 pure vocabulary items (3 lines each) and 9 concepts with real content. The real structure is: (a) concept_class as hub node seen by all paradigms, (b) inductive_bias driven by the NFL negative result, (c) MDL/MML/Bayesian as an analogy triangle of near-misses. The chapter is NOT about definitions - its about showing that even the base types have structure when viewed through the graph.",
+  "session_eta": "High - discovered 3 distinct structural themes in what looks like vocabulary definitions",
+  "notes": "Initialized with Cuzzolin geometric belief framework for Pl measurement and URT R2 Chapter 8 for measurement initialization. Pl = mass assignment concentration (singleton vs large focal sets). Coh = edge-type diversity on node. Inv = restricts vs extends_grammar sensitivity. Comp = open_problems / resolved ratio."
+}

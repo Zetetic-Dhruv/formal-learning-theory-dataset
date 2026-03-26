@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "description": "Gold answers for flt_tasks.json benchmark, derived from flt_concept_graph.json v3.4 by graph traversal",
+    "version": "1.0",
+    "companion_to": "flt_tasks.json v1.0, flt_concept_graph.json v3.4"
+  },
+  "answers": {
+    "T01": {
+      "type": "set_match",
+      "scoring": "set_match",
+      "expected": ["shatters"],
+      "note": "All nodes reachable via defined_using from vc_dimension. In the graph, vc_dimension has only one defined_using edge: to shatters. shatters has no outgoing defined_using edges."
+    },
+    "T02": {
+      "type": "set_match",
+      "scoring": "set_match",
+      "expected": ["ds_dimension", "fundamental_theorem", "occam_algorithm", "vc_characterization", "vc_dimension"],
+      "note": "All nodes X where X characterizes pac_learning, plus fundamental_theorem. meta_pac_bound was reclassified from characterizes to restricts (it is a specialization, not a bidirectional equivalence)."
+    },
+    "T03": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "answer": "NO",
+          "edge_found": true,
+          "witness_contains": "thresholds"
+        }
+      },
+      "note": "does_not_imply edge from pac_learning to mistake_bounded exists with witness about thresholds on R."
+    },
+    "T04": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "bound_nodes": ["information_theoretic_bound", "margin_theory", "pac_bayes_bound", "rademacher_complexity"]
+        }
+      },
+      "note": "Four nodes have upper_bounds -> generalization_error. The task expected algorithmic_stability too, but in the graph algorithmic_stability has defined_using -> generalization_error, not upper_bounds."
+    },
+    "T05": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "bayesian_learner_instance_of_learner": true,
+          "pac_bayes_upper_bounds_gen_error": true,
+          "natarajan_does_not_imply_pac": true,
+          "ds_characterizes_pac": true
+        }
+      },
+      "note": "All four edge traversals confirmed in graph: bayesian_learner instance_of learner, pac_bayes_bound upper_bounds generalization_error, natarajan_dimension does_not_imply pac_learning, ds_dimension characterizes pac_learning."
+    },
+    "T06": {
+      "type": "chain_match",
+      "scoring": "chain_match",
+      "expected": ["bc_learning", "ex_learning", "finite_learning"],
+      "note": "Hierarchy: BC > Ex > FIN. bc_learning restricts ex_learning (BC generalizes Ex), ex_learning strictly_stronger finite_learning."
+    },
+    "T07": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "obstruction_type": "data_model_mismatch",
+          "obstruction_contains": "i.i.d. draws"
+        }
+      },
+      "note": "Analogy edge concept_drift -> online_learning has obstruction about data model mismatch: drift uses i.i.d. draws per step, online uses adversarial instances."
+    },
+    "T08": {
+      "type": "set_match",
+      "scoring": "set_match",
+      "expected": ["natarajan_dimension", "ordinal_vc_dim", "pseudodimension"],
+      "note": "All nodes X with extends_grammar -> vc_dimension."
+    },
+    "T09": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "lower_bounds_pac": true,
+          "used_in_proof_vc": true,
+          "used_in_proof_sq": true,
+          "requires_assumption_crypto": true,
+          "does_not_imply_from_vc": true
+        }
+      },
+      "note": "computational_hardness: lower_bounds pac_learning, used_in_proof vc_dimension and sq_dimension, requires_assumption inductive_bias (crypto assumptions), vc_dimension does_not_imply computational_hardness."
+    },
+    "T10": {
+      "type": "chain_match",
+      "scoring": "chain_match",
+      "expected": ["domain", "label", "shatters", "concept", "iid_sample", "concept_class", "hypothesis_space", "pac_learning", "generalization_error", "sample_complexity", "vc_dimension", "vc_characterization", "fundamental_theorem"],
+      "note": "Topological sort of defined_using subgraph restricted to PAC-related nodes. Multiple valid orderings exist; this is the canonical one from the graph. Key constraint: domain and label first, concept depends on both, concept_class depends on concept, etc."
+    },
+    "T11": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "found": true,
+          "node_id": "scope_boundary_rl"
+        }
+      },
+      "note": "scope_boundary_rl exists with category scope_boundary. Explicitly excluded."
+    },
+    "T12": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "does_not_imply_count": 9,
+          "strictly_stronger_count": 4,
+          "total_count": 13
+        }
+      },
+      "note": "9 does_not_imply + 4 strictly_stronger = 13 separation results, matching the task expectation."
+    },
+    "T13": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "edge_count": 4,
+          "has_characterizes": true,
+          "has_upper_bounds": true,
+          "has_analogy": true,
+          "has_does_not_imply": true
+        }
+      },
+      "note": "4 edges among the four nodes: star_number characterizes vc_dimension, littlestone_dimension upper_bounds vc_dimension, sq_dimension analogy vc_dimension, sq_dimension does_not_imply vc_dimension."
+    },
+    "T14": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "pseudodimension_extends_vc": true,
+          "pseudodimension_restricts_fat_shattering": true,
+          "extends_grammar_count": 3
+        }
+      },
+      "note": "pseudodimension extends_grammar vc_dimension, pseudodimension restricts fat_shattering_dimension. Three nodes extend VC grammar: ordinal_vc_dim, pseudodimension, natarajan_dimension."
+    },
+    "T15": {
+      "type": "structured_explanation",
+      "scoring": "structured_explanation",
+      "expected": {
+        "required_elements": {
+          "fundamental_theorem_to_multiclass_empty": true,
+          "natarajan_does_not_imply_pac": true,
+          "ds_characterizes_pac": true,
+          "natarajan_extends_vc": true,
+          "ds_stronger_natarajan": true
+        }
+      },
+      "note": "fundamental_theorem has no direct edges to multiclass nodes. natarajan_dimension does_not_imply pac_learning (finite d_N insufficient when |Y|=inf). ds_dimension characterizes pac_learning. natarajan extends_grammar vc_dimension. ds_dimension strictly_stronger natarajan_dimension."
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "description": "Analyst commentary and audit results for flt_concept_graph.json v1.0",
+    "date": "2026-03-16"
+  },
+  "edge_audit": {
+    "total_audited": 67,
+    "issues_found": 8,
+    "issues": [
+      {
+        "edge": "vc_dimension --[does_not_imply]--> computational_hardness",
+        "edge_index": 214,
+        "issue_type": "incorrect_citation",
+        "description": "Citation is VapnikChervonenkis1971 ('On the Uniform Convergence of Relative Frequencies of Events to Their Probabilities', 1971). This paper introduces VC dimension but does not discuss computational hardness of learning at all. The separation result (finite VCdim does not imply efficient PAC learnability) is established by KearnsValiant1994 under cryptographic assumptions. The citation should be KearnsValiant1994.",
+        "fix": "Change citation from 'VapnikChervonenkis1971' to 'KearnsValiant1994'"
+      },
+      {
+        "edge": "sq_dimension --[does_not_imply]--> vc_dimension",
+        "edge_index": 215,
+        "issue_type": "direction_reversed",
+        "description": "The note says 'Low VCdim does NOT imply low SQdim' but the edge direction is sq_dimension --[does_not_imply]--> vc_dimension, which reads 'low SQdim does NOT imply low VCdim'. These are different claims. The witness (parities: VCdim=n, SQdim=2^n) shows that low VCdim does not bound SQdim, i.e. vc_dimension --[does_not_imply]--> sq_dimension. But the edge direction and the note are reversed: the edge says SQ does not imply VC, while the note says VC does not imply SQ. The note and witness match each other (both describe the VC-to-SQ direction). The edge source/target should be swapped to match.",
+        "fix": "Swap source and target: change to 'vc_dimension --[does_not_imply]--> sq_dimension', or update the note to match the current direction"
+      },
+      {
+        "edge": "gold_theorem --[does_not_imply]--> pac_learning",
+        "edge_index": 213,
+        "issue_type": "semantic_mismatch",
+        "description": "The source is gold_theorem (an impossibility result), not the Gold learning framework itself. The note says 'Gold-identifiable does NOT imply PAC learnable', but Gold's theorem is a negative result about what is NOT identifiable. The witness (all finite subsets of N are identifiable but have infinite VCdim) is valid, but the source should arguably be ex_learning (the identification in the limit criterion) rather than gold_theorem (the specific impossibility theorem about superfinite classes). The current edge reads: 'Gold's impossibility theorem does not imply PAC learning', which is awkward since an impossibility theorem is not a learnability assertion. A more precise source would be ex_learning.",
+        "fix": "Consider changing source from 'gold_theorem' to 'ex_learning' so the edge reads 'Ex-learning does not imply PAC learning'"
+      },
+      {
+        "edge": "computational_hardness --[requires_assumption]--> inductive_bias",
+        "edge_index": 236,
+        "issue_type": "target_mismatch",
+        "description": "The edge says computational_hardness requires_assumption inductive_bias. But inductive_bias is not the assumption required. The note correctly states the assumption is a cryptographic assumption (DCRA, factoring, LWE). The target should be a cryptographic assumption node, but no such node exists in the graph. The edge currently reads 'cryptographic hardness of learning requires the assumption of inductive bias', which is not what the cited paper says. Applebaum-Barak-Xiao 2008 proves that average-case/crypto assumptions are inherently necessary for computational hardness results. The target 'inductive_bias' is misleading here.",
+        "fix": "The target 'inductive_bias' does not match the note. If no crypto-assumption node exists, the note should clarify that the requires_assumption relation here means 'the hardness result requires a cryptographic assumption to hold, which cannot be reduced to P!=NP'. Consider adding a note field clarification or changing the target to a more appropriate node."
+      },
+      {
+        "edge": "meta_pac_bound --[characterizes]--> pac_learning",
+        "edge_index": 123,
+        "issue_type": "overstated_relation",
+        "description": "The edge claims meta_pac_bound characterizes pac_learning (equivalence). But Baxter 2000 provides a generalization bound for meta-learning that reduces to standard PAC when n=1. This is a bounding/specialization result, not an equivalence theorem. The meta-PAC bound does not characterize PAC learning in the same way the VC characterization does (as a necessary and sufficient condition). It would be more accurate as 'restricts' (meta-learning generalizes PAC) or 'upper_bounds'.",
+        "fix": "Change relation from 'characterizes' to 'restricts' or add a note clarifying this is a reduction/specialization, not a full equivalence"
+      },
+      {
+        "edge": "occam_algorithm --[characterizes]--> pac_learning",
+        "edge_index": 202,
+        "issue_type": "overstated_relation",
+        "description": "The edge claims Occam's razor theorem characterizes PAC learning (equivalence). Blumer et al. 1987 prove one direction: an Occam algorithm implies PAC learning. The partial converse by Board-Pitt 1990 holds only for polynomially closed classes, not in full generality. This is not a complete characterization (bidirectional equivalence) in general.",
+        "fix": "Add a note clarifying that characterization is partial: forward direction is general, converse holds only for polynomially closed classes (Board-Pitt 1990)"
+      },
+      {
+        "edge": "computational_hardness --[used_in_proof]--> sq_dimension",
+        "edge_index": 197,
+        "issue_type": "incorrect_citation",
+        "description": "Citation is KearnsValiant1994 ('Cryptographic Limitations on Learning Boolean Formulae and Finite Automata', 1994). However, SQ dimension was introduced by Blum et al. 1994 and formalized by Kearns 1998. Kearns-Valiant 1994 does not use SQ dimension in its proofs; it uses cryptographic reductions. The note itself mentions that SQ dimension witnesses unconditional hardness, which is a separate result from the crypto-based hardness of Kearns-Valiant. The citation should be BlumFurstJacksonKearnsMansourRudich1994 or Kearns1998.",
+        "fix": "Change citation from 'KearnsValiant1994' to 'Kearns1998' or 'BlumFurstJacksonKearnsMansourRudich1994'"
+      },
+      {
+        "edge": "online_pac_gold_separation --[used_in_proof]--> vc_characterization",
+        "edge_index": 207,
+        "issue_type": "incorrect_citation",
+        "description": "Citation is Gold1967 but the VC characterization (VCdim <-> PAC learnable) was proved by Blumer et al. 1989, not Gold 1967. Gold 1967 does not discuss VC dimension or PAC learning. The separation result uses the VC characterization as proved by later authors.",
+        "fix": "Change citation from 'Gold1967' to 'BlumerEhrenfeuchtHausslerWarmuth1989'"
+      }
+    ]
+  },
+  "ontology_decisions": {
+    "generalizes_resolved": [
+      {
+        "edge": "anomalous_learning -> ex_learning",
+        "resolution": "restricts",
+        "rationale": "Anomalous learning removes exact convergence constraint. Same grammar (text presentation, hypothesis sequence), weaker success criterion."
+      },
+      {
+        "edge": "mind_change_ordinal -> mind_change_count",
+        "resolution": "extends_grammar",
+        "rationale": "Extends natural number mind-change counts to countable ordinals. Requires ordinal arithmetic, limit ordinals, transfinite induction — genuinely new primitives."
+      },
+      {
+        "edge": "nfa -> dfa",
+        "resolution": "restricts",
+        "rationale": "NFA removes the determinism constraint from DFA. Same formalism (states, alphabet, transitions, acceptance), one constraint removed."
+      },
+      {
+        "edge": "pushdown_automaton -> dfa",
+        "resolution": "extends_grammar",
+        "rationale": "PDA adds stack (new data structure), stack alphabet (new type), stack operations (push/pop). Genuinely new primitives not present in DFA."
+      },
+      {
+        "edge": "fundamental_theorem -> vc_characterization",
+        "resolution": "restricts",
+        "rationale": "The 9-way fundamental theorem adds more equivalent conditions (compression, uniform convergence, growth function bounds) but all are definable in the existing type vocabulary. No new grammar needed — just more equivalences proved."
+      }
+    ]
+  },
+  "known_analyst_judgments": [
+    "Analogy obstruction fields are analyst assessments identifying what blocks formal upgrade of structural parallels to proved theorems. These are not themselves formal proofs.",
+    "Scope boundary descriptions are editorial decisions about what falls outside the graph's coverage."
+  ],
+  "project_specific_content_removed": [
+    "Internal research programme references",
+    "Internal framework terminology",
+    "Section references to unpublished manuscripts",
+    "Implementation-specific notes",
+    "Internal commentary"
+  ],
+  "audit_summary": {
+    "characterizes_edges": {
+      "count": 28,
+      "all_citations_in_bib": true,
+      "issues": [
+        "meta_pac_bound -> pac_learning: overstated, not a full equivalence",
+        "occam_algorithm -> pac_learning: partial characterization only (Board-Pitt converse needs polynomially closed classes)"
+      ],
+      "clean": 26
+    },
+    "does_not_imply_edges": {
+      "count": 9,
+      "all_have_witnesses": true,
+      "all_citations_in_bib": true,
+      "issues": [
+        "vc_dimension -> computational_hardness: wrong citation (VC1971 instead of KV1994)",
+        "sq_dimension -> vc_dimension: direction reversed vs note",
+        "gold_theorem -> pac_learning: source should be ex_learning not gold_theorem"
+      ],
+      "clean": 6
+    },
+    "strictly_stronger_edges": {
+      "count": 4,
+      "all_have_witnesses": true,
+      "all_citations_in_bib": true,
+      "issues": [],
+      "clean": 4,
+      "note": "All four edges (universal_learning > pac_learning, ex_learning > finite_learning, online_learning > pac_learning, ds_dimension > natarajan_dimension) have correct witnesses, correct citations, and correct direction."
+    },
+    "upper_bounds_edges": {
+      "count": 8,
+      "all_citations_in_bib": true,
+      "issues": [],
+      "clean": 8,
+      "note": "All upper_bounds edges have correct citations supporting bounding theorems. Direction is correct in all cases."
+    },
+    "lower_bounds_edges": {
+      "count": 4,
+      "all_citations_in_bib": true,
+      "issues": [],
+      "clean": 4,
+      "note": "Gold1967 lower-bounds ex_learning (superfinite classes not learnable from text). BEHW1989 lower-bounds pac_learning and sample_complexity. PittValiant1988 lower-bounds pac_learning (proper learning). KearnsValiant1994 lower-bounds pac_learning (computational). All correct."
+    },
+    "requires_assumption_edges": {
+      "count": 2,
+      "all_citations_in_bib": true,
+      "issues": [
+        "computational_hardness -> inductive_bias: target 'inductive_bias' does not match the cryptographic assumption described in note"
+      ],
+      "clean": 1
+    },
+    "used_in_proof_edges": {
+      "count": 12,
+      "all_citations_in_bib": true,
+      "issues": [
+        "computational_hardness -> sq_dimension: citation KV1994 does not use SQ dimension",
+        "online_pac_gold_separation -> vc_characterization: citation Gold1967 did not prove VC characterization"
+      ],
+      "clean": 10
+    }
+  }
+}
