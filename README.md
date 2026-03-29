@@ -66,7 +66,7 @@ flowchart LR
 | [formal-learning-theory-discovery](https://github.com/Zetetic-Dhruv/formal-learning-theory-discovery) | Synthetic discovery analysis. URS traces, metakernel data, exploration paths from the formalization process. | 74 traces, 10,000+ paths |
 | [First-Proof-Benchmark-Results](https://github.com/Zetetic-Dhruv/First-Proof-Benchmark-Results) | Empirical analysis of autonomous proof discovery on Harvard's First Proof benchmark. 98% inference validity, 69% generalization robustness. The 29-point gap is the core finding. | 10 problems, 85 audited steps |
 
-The kernel produces theorems. The book presents them. The discovery repo records *how* they were found — including the dead ends. This dataset distills the typed structure into a machine-readable graph. The benchmark measures whether frontier models can reason over that structure. The flow is: formalize → discover → encode → evaluate → specialize.
+The kernel produces theorems. The book presents them. The discovery repo records *how* they were found, including the dead ends. This dataset distills the typed structure into a machine-readable graph. The benchmark measures whether frontier models can reason over that structure. The flow is: formalize → discover → encode → evaluate → specialize.
 
 ---
 
@@ -119,7 +119,7 @@ flowchart TB
 | Layer | Count | Primary categories | Role |
 |-------|-------|--------------------|------|
 | L0 | 19 | computation_model, formal_object | Automata, computability, Bayesian and information-theoretic primitives |
-| L1 | 11 | base_type | Domain, Label, Concept, Hypothesis — the substrate all paradigms share |
+| L1 | 11 | base_type | Domain, Label, Concept, Hypothesis: the substrate all paradigms share |
 | L2 | 10 | data_presentation | How data reaches the learner: i.i.d. samples, streams, oracles, queries |
 | L3 | 21 | learner_type | What the learner is: batch, online, Gold, Bayesian, meta |
 | L4 | 20 | success_criterion | What "learning" means: PAC, Ex, BC, mistake-bounded, universal |
@@ -169,7 +169,7 @@ flowchart TB
 
 A field is not defined only by what holds. It is defined equally by what does not hold, and the witnesses that prove it.
 
-The graph contains 50 negative-space items: 9 non-implications with witnesses, 4 strict-hierarchy separations with witnesses, 32 analogy obstructions classified by failure type, 2 conditional results requiring cryptographic assumptions, and 3 explicit scope exclusions. Together these constitute the *joint structure* of learning theory — the points where paradigms that appear related are proved to be fundamentally separated.
+The graph contains 50 negative-space items: 9 non-implications with witnesses, 4 strict-hierarchy separations with witnesses, 32 analogy obstructions classified by failure type, 2 conditional results requiring cryptographic assumptions, and 3 explicit scope exclusions. Together these constitute the *joint structure* of learning theory: the points where paradigms that appear related are proved to be fundamentally separated.
 
 ### The 13 Separation Witnesses
 
@@ -189,7 +189,7 @@ Each separation carries a constructive witness: a specific concept class or math
 | PAC learning | Exact learning | PAC allows approximation error ε; exact requires zero error. | Valiant 1984 |
 | Natarajan dimension | PAC learning | Non-learnable class with Natarajan dimension 1 when \|Y\| = ∞. | Brukhim–Carmon–Dinur–Moran–Yehudayoff 2022 |
 
-Consider the last row. For thirty years, the Natarajan dimension was treated as the multiclass analogue of VC dimension. Finite Natarajan dimension was believed to characterize multiclass PAC learnability, the way finite VC dimension characterizes binary learnability. It does not. Brukhim et al. (2022) constructed a concept class with Natarajan dimension 1 — the smallest possible non-trivial value — that is not PAC learnable when the label space is infinite. The correct multiclass characterization requires the DS dimension, a strictly stronger combinatorial parameter. The graph records both the failed conjecture (`natarajan_dimension --[does_not_imply]--> pac_learning`) and the correct characterization (`ds_dimension --[characterizes]--> pac_learning`).
+Consider the last row. For thirty years, the Natarajan dimension was treated as the multiclass analogue of VC dimension. Finite Natarajan dimension was believed to characterize multiclass PAC learnability, the way finite VC dimension characterizes binary learnability. It does not. Brukhim et al. (2022) constructed a concept class with Natarajan dimension 1 (the smallest possible non-trivial value) that is not PAC learnable when the label space is infinite. The correct multiclass characterization requires the DS dimension, a strictly stronger combinatorial parameter. The graph records both the failed conjecture (`natarajan_dimension --[does_not_imply]--> pac_learning`) and the correct characterization (`ds_dimension --[characterizes]--> pac_learning`).
 
 #### Strict hierarchies
 
@@ -231,7 +231,7 @@ flowchart TB
 
 ### The Obstruction Taxonomy
 
-All 32 analogy edges carry an `obstruction` field identifying what blocks formal upgrade, and an `obstruction_type` classifying the failure mode. The obstruction type is more informative than the analogy itself — it identifies the *kind* of wall between paradigms.
+All 32 analogy edges carry an `obstruction` field identifying what blocks formal upgrade, and an `obstruction_type` classifying the failure mode. The obstruction type is more informative than the analogy itself: it identifies the *kind* of wall between paradigms.
 
 | Obstruction Type | Count | What blocks the analogy |
 |------------------|-------|-------------------------|
@@ -246,7 +246,7 @@ The `type_mismatch` obstructions are the most structurally significant. They cor
 
 1. **PAC vs. Online vs. Gold learner types have no common parent.** The data presentations are incompatible (i.i.d. sample vs. adversarial stream vs. text/informant), which forces incompatible learner signatures, which forces incompatible success criteria, which forces incompatible complexity measures. This is not a design choice. It is the mathematics.
 
-2. **Finite dimensions (WithTop ℕ) vs. ordinal dimensions (Ordinal) cannot be unified.** VC dimension lives in ℕ ∪ {∞}. Ordinal VC dimension lives in the countable ordinals. The type systems are incompatible. Extending from finite to ordinal required new primitives — not merely removing constraints.
+2. **Finite dimensions (WithTop ℕ) vs. ordinal dimensions (Ordinal) cannot be unified.** VC dimension lives in ℕ ∪ {∞}. Ordinal VC dimension lives in the countable ordinals. The type systems are incompatible. Extending from finite to ordinal required new primitives, not merely removing constraints.
 
 3. **MeasurableSet vs. NullMeasurableSet for uncountable concept classes.** The symmetrization proof of the fundamental theorem requires Tonelli interchange over concept classes. For uncountable classes, standard MeasurableSet blocks this interchange. NullMeasurableSet suffices. This discovery (kernel Session 7) resolved a 2-sorry block in the critical path.
 
@@ -270,27 +270,27 @@ The 13 relation types are not an ad hoc taxonomy. Each has a formal inverse, ena
 
 | Relation | Inverse | Semantics | Required fields |
 |----------|---------|-----------|-----------------|
-| `defined_using` | `definition_of` | X's definition directly invokes Y. | — |
-| `instance_of` | `has_instance` | X is a specific instance/specialization of Y. | — |
+| `defined_using` | `definition_of` | X's definition directly invokes Y. | - |
+| `instance_of` | `has_instance` | X is a specific instance/specialization of Y. | - |
 | `characterizes` | `characterized_by` | X ↔ Y: equivalence under stated conditions. | `citation` |
 | `upper_bounds` | `bounded_above_by` | X provides upper bound on Y. | `citation` |
 | `lower_bounds` | `bounded_below_by` | X provides lower bound on Y. | `citation` |
 | `requires_assumption` | `assumed_by` | X holds only if Y is assumed. | `citation` |
 | `strictly_stronger` | `strictly_weaker` | X ⊋ Y with known witness for separation. | `witness`, `citation` |
-| `measures` | `measured_by` | Complexity measure X quantifies property of Y. | — |
-| `analogy` | `analogy` | Structural parallel, formally independent. | — |
+| `measures` | `measured_by` | Complexity measure X quantifies property of Y. | - |
+| `analogy` | `analogy` | Structural parallel, formally independent. | - |
 | `does_not_imply` | `not_implied_by` | X does NOT imply Y, with witness. | `witness`, `citation` |
 | `used_in_proof` | `proves_about` | Theorem X uses concept Y in its proof. Distinct from `defined_using`. | `citation` |
-| `restricts` | `restricted_from` | X generalizes Y by removing a constraint. No new grammar needed. | — |
-| `extends_grammar` | `grammar_extended_by` | X generalizes Y but required inventing new primitives not present in Y. | — |
+| `restricts` | `restricted_from` | X generalizes Y by removing a constraint. No new grammar needed. | - |
+| `extends_grammar` | `grammar_extended_by` | X generalizes Y but required inventing new primitives not present in Y. | - |
 
 ### The `extends_grammar` / `restricts` Distinction
 
 The distinction between these two generalization types is a contribution of this dataset. Most knowledge graphs encode "generalizes" as a single relation. But there are two fundamentally different kinds of generalization:
 
-**`restricts`** — X generalizes Y by removing a constraint, using the same formal vocabulary. NFA generalizes DFA by removing the determinism constraint. BC-learning generalizes Ex-learning by relaxing exact convergence to set-convergence. No new primitives are needed. The grammar is conserved.
+**`restricts`**: X generalizes Y by removing a constraint, using the same formal vocabulary. NFA generalizes DFA by removing the determinism constraint. BC-learning generalizes Ex-learning by relaxing exact convergence to set-convergence. No new primitives are needed. The grammar is conserved.
 
-**`extends_grammar`** — X generalizes Y but required inventing new concepts not present in Y. Pseudodimension extends VC dimension by adding witness thresholds for real-valued functions. Natarajan dimension extends VC dimension by adding multiclass shattering with two-coloring witnesses. Ordinal VC dimension extends VC dimension by replacing ℕ ∪ {∞} with countable ordinals. In each case, genuinely new primitives — not merely relaxed constraints — were required.
+**`extends_grammar`**: X generalizes Y but required inventing new concepts not present in Y. Pseudodimension extends VC dimension by adding witness thresholds for real-valued functions. Natarajan dimension extends VC dimension by adding multiclass shattering with two-coloring witnesses. Ordinal VC dimension extends VC dimension by replacing ℕ ∪ {∞} with countable ordinals. In each case, genuinely new primitives, not merely relaxed constraints, were required.
 
 This distinction matters for proof discovery. A `restricts` generalization preserves the proof structure of the original (remove a hypothesis and check what survives). An `extends_grammar` generalization breaks the proof structure and requires new techniques. A bridge lemma generator must know which kind of gap it is facing.
 
@@ -323,7 +323,7 @@ The companion file `flt_commentary.json` records an independent audit of 67 edge
 | `requires_assumption` | 2 | 1 | 1 (target mismatch) |
 | `used_in_proof` | 12 | 10 | 2 (wrong citations) |
 
-The audit does not soften its findings. The 8 issues are real errors, not edge cases. They are recorded with precise fixes so that downstream consumers — including fine-tuned models — can apply corrections.
+The audit does not soften its findings. The 8 issues are real errors, not edge cases. They are recorded with precise fixes so that downstream consumers (including fine-tuned models) can apply corrections.
 
 ---
 
@@ -347,7 +347,7 @@ Each task is a structured query answerable by graph traversal. The task specifie
 | T08 | Grammar expansion | Which generalizations of VCdim required new formal primitives? | Easy | `extends_grammar` |
 | T09 | Computational barrier | What prevents efficient PAC learning even when VCdim is finite? | Medium | `requires_assumption`, `used_in_proof`, `does_not_imply` |
 | T10 | Curriculum ordering | Generate a reading order for learning PAC theory from scratch. | Medium | `defined_using` |
-| T11 | Scope boundary | Is reinforcement learning covered in this graph? | Easy | — |
+| T11 | Scope boundary | Is reinforcement learning covered in this graph? | Easy | - |
 | T12 | Separation retrieval | List all known separations between paradigms with witnesses. | Easy | `does_not_imply`, `strictly_stronger` |
 | T13 | Complexity comparison | How do VCdim, Ldim, SQdim, and star number relate? | Hard | `upper_bounds`, `analogy`, `does_not_imply` |
 | T14 | Real-valued extension | What changes from binary classification to real-valued prediction? | Medium | `extends_grammar`, `restricts`, `characterizes` |
@@ -363,7 +363,7 @@ Three scoring methods match the three answer types:
 | `chain_match` | T06, T10 | Coverage × order correctness. Items must appear in correct relative order. |
 | `structured_explanation` | T03–T05, T07, T09, T11–T15 | Required conceptual elements checked for presence. Each element is binary (present/absent). Score = fraction of elements found. |
 
-The three hard tasks (T05, T13, T15) require combining multiple edge types across paradigms — the kind of multi-hop reasoning that benchmarks like these are designed to test and that current models struggle with.
+The three hard tasks (T05, T13, T15) require combining multiple edge types across paradigms, the kind of multi-hop reasoning that benchmarks like these are designed to test, and that current models struggle with.
 
 ---
 
@@ -455,9 +455,9 @@ The default configuration targets Qwen 2.5 7B Instruct with QLoRA:
 | Max sequence length | 2048 |
 
 Adjust `base_model` in `config/training_config.yaml` for different scales:
-- `Qwen/Qwen2.5-1.5B-Instruct` — ~8 GB VRAM
-- `Qwen/Qwen2.5-7B-Instruct` — ~16 GB VRAM
-- `Qwen/Qwen2.5-14B-Instruct` — ~40 GB VRAM
+- `Qwen/Qwen2.5-1.5B-Instruct`: ~8 GB VRAM
+- `Qwen/Qwen2.5-7B-Instruct`: ~16 GB VRAM
+- `Qwen/Qwen2.5-14B-Instruct`: ~40 GB VRAM
 
 ### Update Pipeline
 
@@ -484,9 +484,9 @@ This dataset was built to support a specific research question: **can a small la
 
 ### The empirical motivation
 
-The [First Proof Benchmark Results](https://github.com/Zetetic-Dhruv/First-Proof-Benchmark-Results) tested autonomous proof discovery on 10 open research-level mathematics problems. The core finding: 98% inference validity but only 69% generalization robustness — a 29-point gap. The model rarely produces invalid mathematics. It fails when a locally valid argument does not survive transport to the full target.
+The [First Proof Benchmark Results](https://github.com/Zetetic-Dhruv/First-Proof-Benchmark-Results) tested autonomous proof discovery on 10 open research-level mathematics problems. The core finding: 98% inference validity but only 69% generalization robustness, a 29-point gap. The model rarely produces invalid mathematics. It fails when a locally valid argument does not survive transport to the full target.
 
-The most common failure mode is case enumeration instead of generalization. Given a sorry hole between known atoms A and B, frontier models prove the bridge for n = 1, n = 2, n = 3, and leave the task incomplete. They do not propose the ∀n statement. The atoms are known. The types are known. The general connecting statement — the bridge lemma — is what the model cannot construct.
+The most common failure mode is case enumeration instead of generalization. Given a sorry hole between known atoms A and B, frontier models prove the bridge for n = 1, n = 2, n = 3, and leave the task incomplete. They do not propose the ∀n statement. The atoms are known. The types are known. The general connecting statement, the bridge lemma, is what the model cannot construct.
 
 ### Two kinds of generalization failure
 
@@ -506,7 +506,7 @@ Given a Lean 4 proof with a `sorry`:
 2. **Propose a bridge** as a typed graph edge: source atom, target atom, relation type, and a natural-language statement precise enough to formalize.
 3. **Output in dual format**: a Lean 4 type signature (machine-verifiable) and a JSON graph edge (human/agent-parsable).
 
-This solves two failure modes simultaneously. **Transport failure** (the proposed lemma uses types or premises not available in the current context) is prevented by DAG traversal — the model knows what's reachable. **Mathlib anxiety** (the agent cannot find the right mathlib lemma) is prevented by the same mechanism — the model searches the type-theoretic DAG, not a text index.
+This solves two failure modes simultaneously. **Transport failure** (the proposed lemma uses types or premises not available in the current context) is prevented by DAG traversal, because the model knows what is reachable. **Mathlib anxiety** (the agent cannot find the right mathlib lemma) is prevented by the same mechanism: the model searches the type-theoretic DAG, not a text index.
 
 ### What remains to be built
 
@@ -535,12 +535,12 @@ The question is whether 600–1000 ground-truth bridges from a 210-theorem kerne
 | `claim_type` | ✓ | enum | `definition` or `theorem` |
 | `description` | ✓ | string | Full description including formal content |
 | `formal_definition` | ✓ | string | Formal mathematical definition |
-| `bib_keys` | — | string[] | Bibliography keys |
-| `provenance` | — | object | `{introduced_by, year, note}` or `{proved_by, ...}` or `{field_origin}` |
-| `key_theorems` | — | string[] | Major results about this concept |
-| `open_problems` | — | string[] | Known open problems |
-| `scope_note` | — | string | How this concept extends beyond the primary scope |
-| `connections` | — | string[] | Informal cross-references |
+| `bib_keys` | - | string[] | Bibliography keys |
+| `provenance` | - | object | `{introduced_by, year, note}` or `{proved_by, ...}` or `{field_origin}` |
+| `key_theorems` | - | string[] | Major results about this concept |
+| `open_problems` | - | string[] | Known open problems |
+| `scope_note` | - | string | How this concept extends beyond the primary scope |
+| `connections` | - | string[] | Informal cross-references |
 
 ### Edge Schema
 
@@ -551,11 +551,11 @@ The question is whether 600–1000 ground-truth bridges from a 210-theorem kerne
 | `relation` | ✓ | enum | One of the 13 relation types |
 | `citation` | conditional | string | Required for `characterizes`, `does_not_imply`, `strictly_stronger`, `upper_bounds`, `lower_bounds`, `requires_assumption`, `used_in_proof` |
 | `witness` | conditional | string | Required for `does_not_imply`, `strictly_stronger` |
-| `note` | — | string | Explanation of the relationship |
-| `edge_level` | — | string | `conceptual` or `claim` |
-| `obstruction` | — | string | What blocks formal upgrade (for `analogy` edges) |
-| `obstruction_type` | — | enum | `type_mismatch`, `missing_equivalence_witness`, `one_way_theorem_only`, `proof_method_mismatch`, `data_model_mismatch`, `success_criterion_mismatch` |
-| `generalization_type` | — | string | For `restricts` and `extends_grammar` edges |
+| `note` | - | string | Explanation of the relationship |
+| `edge_level` | - | string | `conceptual` or `claim` |
+| `obstruction` | - | string | What blocks formal upgrade (for `analogy` edges) |
+| `obstruction_type` | - | enum | `type_mismatch`, `missing_equivalence_witness`, `one_way_theorem_only`, `proof_method_mismatch`, `data_model_mismatch`, `success_criterion_mismatch` |
+| `generalization_type` | - | string | For `restricts` and `extends_grammar` edges |
 
 ---
 
