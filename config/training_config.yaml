@@ -1,0 +1,57 @@
+# Qwen 2.5 Fine-Tuning Configuration for FLT Domain
+# Adjust base_model size based on your GPU memory:
+#   - 1.5B: ~8GB VRAM (single consumer GPU)
+#   - 7B:   ~16GB VRAM (single A100/4090)
+#   - 14B:  ~40GB VRAM (A100 80GB)
+
+model:
+  base_model: "Qwen/Qwen2.5-7B-Instruct"
+  # Alternatives:
+  # base_model: "Qwen/Qwen2.5-1.5B-Instruct"   # lighter
+  # base_model: "Qwen/Qwen2.5-14B-Instruct"     # heavier
+  torch_dtype: "bfloat16"
+  attn_implementation: "flash_attention_2"   # requires flash-attn; set to "eager" if unavailable
+
+lora:
+  r: 32
+  lora_alpha: 64
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  task_type: "CAUSAL_LM"
+
+training:
+  output_dir: "checkpoints/flt-qwen2.5-7b"
+  num_train_epochs: 5
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4   # effective batch size = 16
+  learning_rate: 2.0e-5
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  max_seq_length: 2048
+  logging_steps: 10
+  save_strategy: "epoch"
+  eval_strategy: "epoch"
+  eval_steps: 50
+  bf16: true
+  gradient_checkpointing: true
+  dataloader_num_workers: 4
+  seed: 42
+
+data:
+  train_file: "data/train.jsonl"
+  eval_file: "data/eval.jsonl"       # generated from held-out tasks
+  chat_template: "qwen"              # uses Qwen's built-in chat template
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+  bnb_4bit_use_double_quant: true

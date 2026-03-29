@@ -1,8 +1,34 @@
-.DS_Store
+# Data artifacts (regenerable)
+data/train.jsonl
+data/eval.jsonl
+data/incremental.jsonl
+data/last_trained_graph.json
+data/update_state.json
+
+# Model checkpoints
+checkpoints/
+
+# Python
 __pycache__/
 *.pyc
-.env
-.venv/
 *.egg-info/
 dist/
 build/
+.eggs/
+
+# Environment
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Eval results (regenerable)
+eval_results.json
