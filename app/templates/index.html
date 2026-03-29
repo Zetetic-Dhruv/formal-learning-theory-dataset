@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLT — Formal Learning Theory Explorer</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-dim: #1f6feb;
+            --positive: #3fb950;
+            --negative: #f85149;
+            --warning: #d29922;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 12px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--surface);
+        }
+
+        header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        header .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-family: var(--font-mono);
+        }
+
+        .tag-positive { background: rgba(63, 185, 80, 0.15); color: var(--positive); }
+        .tag-negative { background: rgba(248, 81, 73, 0.15); color: var(--negative); }
+        .tag-info { background: rgba(88, 166, 255, 0.15); color: var(--accent); }
+
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar: graph browser */
+        .sidebar {
+            width: 300px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .sidebar input {
+            width: 100%;
+            padding: 8px 16px;
+            background: var(--bg);
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .sidebar input::placeholder { color: var(--text-muted); }
+
+        .node-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+        .node-item {
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .node-item:hover { background: rgba(88, 166, 255, 0.08); }
+        .node-item.active { background: rgba(88, 166, 255, 0.15); color: var(--accent); }
+
+        .node-cat {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Chat area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            max-width: 720px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--accent-dim);
+            color: white;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .message.system-info {
+            align-self: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .input-area {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            background: var(--surface);
+        }
+
+        .input-area textarea {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            min-height: 44px;
+            max-height: 200px;
+        }
+
+        .input-area textarea:focus { border-color: var(--accent); }
+
+        .input-area button {
+            padding: 10px 20px;
+            background: var(--accent-dim);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .input-area button:hover { background: var(--accent); }
+        .input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Loading */
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 8px 0;
+        }
+        .typing-indicator span {
+            width: 6px; height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: blink 1.2s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FLT Explorer</h1>
+        <span class="tag tag-positive">positive space</span>
+        <span class="tag tag-negative">negative space</span>
+        <span class="tag tag-info">Qwen 2.5 + LoRA</span>
+    </header>
+
+    <div class="main">
+        <div class="sidebar">
+            <div class="sidebar-header">CONCEPT GRAPH (142 nodes)</div>
+            <input type="text" id="nodeSearch" placeholder="Search concepts...">
+            <div class="node-list" id="nodeList"></div>
+        </div>
+
+        <div class="chat-area">
+            <div class="messages" id="messages">
+                <div class="message system-info">
+                    Ask about formal learning theory. The model knows both what holds
+                    (characterizations, bounds, proofs) and what doesn't (separations,
+                    counterexamples, obstructions).
+                </div>
+            </div>
+            <div class="input-area">
+                <textarea id="userInput" placeholder="Ask about PAC learning, VC dimension, separations..." rows="1"></textarea>
+                <button id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let chatHistory = [];
+        let allNodes = [];
+
+        // --- Node sidebar ---
+        async function loadNodes() {
+            try {
+                const res = await fetch(`${API_BASE}/graph/nodes`);
+                const data = await res.json();
+                allNodes = data.nodes || [];
+                renderNodes(allNodes);
+            } catch (e) {
+                document.getElementById('nodeList').innerHTML =
+                    '<div style="padding:16px;color:var(--text-muted);font-size:12px">Graph unavailable</div>';
+            }
+        }
+
+        function renderNodes(nodes) {
+            const list = document.getElementById('nodeList');
+            list.innerHTML = nodes.map(n =>
+                `<div class="node-item" onclick="askAboutNode('${n.id}', '${n.name}')">
+                    <span>${n.name}</span>
+                    <span class="node-cat">${n.category}</span>
+                </div>`
+            ).join('');
+        }
+
+        document.getElementById('nodeSearch').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            renderNodes(allNodes.filter(n =>
+                n.name.toLowerCase().includes(q) ||
+                n.id.toLowerCase().includes(q) ||
+                n.category.toLowerCase().includes(q)
+            ));
+        });
+
+        function askAboutNode(id, name) {
+            const input = document.getElementById('userInput');
+            input.value = `What is ${name} and how does it relate to other concepts in learning theory?`;
+            input.focus();
+        }
+
+        // --- Chat ---
+        function addMessage(role, content) {
+            const div = document.createElement('div');
+            div.className = `message ${role}`;
+            div.textContent = content;
+            document.getElementById('messages').appendChild(div);
+            div.scrollIntoView({ behavior: 'smooth' });
+            return div;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message assistant';
+            div.id = 'typing';
+            div.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+            document.getElementById('messages').appendChild(div);
+            div.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function removeTyping() {
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            addMessage('user', text);
+            chatHistory.push({ role: 'user', content: text });
+
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            showTyping();
+
+            try {
+                const res = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: chatHistory,
+                        max_new_tokens: 512,
+                        temperature: 0.3,
+                    }),
+                });
+                const data = await res.json();
+                removeTyping();
+                addMessage('assistant', data.response);
+                chatHistory.push({ role: 'assistant', content: data.response });
+            } catch (e) {
+                removeTyping();
+                addMessage('assistant', `Error: ${e.message}. Is the server running?`);
+            }
+
+            btn.disabled = false;
+        }
+
+        // Enter to send, Shift+Enter for newline
+        document.getElementById('userInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Auto-resize textarea
+        document.getElementById('userInput').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+        });
+
+        // Init
+        loadNodes();
+    </script>
+</body>
+</html>
